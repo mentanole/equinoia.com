@@ -1,7 +1,7 @@
 ---
 version: 2.0
 name: Equinoia-design-system
-description: A dark, monochrome marketing site for Equinoia, a local-first Windows reference manager. The system anchors on a near-black canvas with a serif display face (Fraunces) for headlines, a humanist sans (Inter) for body copy, and an off-white accent used for CTAs and highlights instead of a hue. The one deliberate exception is the app-window mockup's own "content" (photo/palette/texture tiles), which keeps real color to read as the user's actual colorful reference library inside an otherwise monochrome shell. A short ctOS-style "decode" intro (a canvas-rendered field of flickering glitch blocks with yellow/blue chromatic-aberration fringing, resolving into "EQUINOIA") plays once per session before the page reveals.
+description: A dark, monochrome marketing site for Equinoia, a local-first Windows reference manager. The system anchors on a near-black canvas with a serif display face (Fraunces) for headlines, and a native system-font sans (SF Pro on Mac/iOS via -apple-system, matched natively on other platforms) for body copy, with an off-white accent used for CTAs and highlights instead of a hue. The one deliberate exception is the app-window mockup's own "content" (photo/palette/texture tiles), which keeps real color to read as the user's actual colorful reference library inside an otherwise monochrome shell. A short ctOS-style "decode" intro (a canvas-rendered field of glitch blocks with yellow/blue chromatic-aberration fringing, resolving into "EQUINOIA") plays once per session before the page reveals — built with flash-safety as a hard constraint, not just an aesthetic flourish.
 
 colors:
   bg: "#0E0E0D"
@@ -45,32 +45,33 @@ typography:
     fontWeight: 600
     note: "Used for price amounts and stat numbers, not just headlines."
   body-md:
-    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', 'Inter', Roboto, sans-serif"
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.55
+    note: "Native system font: SF Pro on Mac/iOS, Segoe UI on Windows, Roboto on Android, Inter as the loaded-web-font fallback everywhere else. SF Pro itself is never embedded — Apple's license doesn't permit distributing it as a web font."
   body-lead:
-    fontFamily: "Inter, sans-serif"
+    fontFamily: "{typography.body-md.fontFamily}"
     fontSize: "1.04rem–1.12rem"
     fontWeight: 400
     lineHeight: 1.55
     note: "hero-sub, feature-copy p, pricing-head p"
   label-sm:
-    fontFamily: "Inter, sans-serif"
+    fontFamily: "{typography.body-md.fontFamily}"
     fontSize: 0.9rem
     fontWeight: 500
   kicker:
-    fontFamily: "Inter, sans-serif"
+    fontFamily: "{typography.body-md.fontFamily}"
     fontSize: 0.8rem
     fontWeight: 700
     letterSpacing: 0.06em
     textTransform: uppercase
   caption:
-    fontFamily: "Inter, sans-serif"
+    fontFamily: "{typography.body-md.fontFamily}"
     fontSize: "0.66rem–0.85rem"
     fontWeight: 400-600
   button:
-    fontFamily: "Inter, sans-serif"
+    fontFamily: "{typography.body-md.fontFamily}"
     fontSize: 0.95rem
     fontWeight: 600
   intro-decode:
@@ -192,9 +193,14 @@ and it's the single moment of color on the page. Don't desaturate it
 and don't add color anywhere else to compensate.
 
 Headlines run **Fraunces** (serif, weight 600, tight `-0.01em`
-tracking). Body copy runs **Inter**. That pairing is unchanged from
-before the dark conversion — do not swap in another product's exact
-hex codes, wordmark, or licensed typefaces when iterating here.
+tracking). Body copy runs the **native system sans** (SF Pro on
+Mac/iOS via `-apple-system`/`BlinkMacSystemFont`, Segoe UI on Windows,
+Roboto on Android, with the loaded Inter web font as the fallback on
+anything else) — do not swap in another product's exact hex codes,
+wordmark, or licensed typefaces when iterating here. SF Pro itself is
+never bundled as a web font asset; Apple's license doesn't allow
+distributing it that way, so the only correct way to get it is the OS
+substituting it in for the system-font keywords on Apple devices.
 
 The page alternates surfaces for pacing, now all dark, distinguished by
 value rather than hue:
@@ -206,25 +212,42 @@ value rather than hue:
 ## Intro decode
 
 Modeled on the Watch Dogs 2 "ctOS" transition: a fixed full-viewport
-`<canvas>` (`{colors.bg}`) fills with a flickering field of glitch
-rectangles and triangles (sizes 4-90px, re-randomized every frame,
-density ramping down over the animation) plus scattered 2px dot noise,
-all drawn with a chromatic-aberration triple-draw (a warm-yellow copy
-offset -2px, a cool-blue copy offset +2px, the off-white core on top —
-the one place hue appears outside the mockup tiles, and only for this
-~0.9s transient). A monospace "EQUINOIA" decodes in the center via the
-same character-scramble as before, sharing the fringe treatment, then
-holds briefly and the whole canvas fades. Total runtime is tuned to
-~1.5-1.6s including the fade so it stays safely under the 2s ceiling.
+`<canvas>` (`{colors.bg}`) holds a field of glitch rectangles and
+triangles (sizes 4-60px) plus 2px dot noise, drawn with a
+chromatic-aberration triple-draw (a warm-yellow copy offset -1.5px, a
+cool-blue copy offset +1.5px, the off-white core on top at 75%
+opacity — the one place hue appears outside the mockup tiles, and only
+for this ~0.9s transient). A monospace "EQUINOIA" decodes in the
+center via a character-scramble, sized to ~6% of the smaller viewport
+dimension so it never dominates the frame, sharing the fringe
+treatment, then holds briefly and the whole canvas fades. Total
+runtime is tuned to ~1.4-1.6s including the fade, safely under the 2s
+ceiling.
+
+**Flash safety is load-bearing, not decorative.** The block/dot field
+is a persistent pool where each element independently has only a ~2.5%
+chance per frame of being replaced — roughly 1.5 changes/second per
+element, under the WCAG general-flash threshold of 3/second — instead
+of the whole field being regenerated every frame. That keeps any given
+screen region's flicker rate low and desynchronized rather than a
+large-area synchronized strobe. Density ramps down by trimming the
+pool's length, never by mass-regenerating it. Don't "simplify" this
+back to a full per-frame regeneration — that was the original
+implementation and it was a genuine photosensitive-seizure risk, not
+just a taste call.
+
 It runs once per `sessionStorage` (a synchronous inline script at the
 top of `<body>` sets `html.no-intro` before first paint on repeat
 views, so it never flashes on reload/internal navigation within the
 same session). It's skippable by click or keypress, and
 `prefers-reduced-motion` users see the resolved word immediately with
-no glitch field. Implementation lives in `js/main.js` (`#intro` block,
+no glitch field at all — though the base experience must stay
+flash-safe on its own, since not every photosensitive user has that OS
+setting enabled. Implementation lives in `js/main.js` (`#intro` block,
 canvas drawing helpers `drawGlitchShape`/`drawGlitchText`) and
 `css/styles.css` (`#intro` / `#intro-canvas` rules) — monospace is the
-only typeface used here, reserved for this moment.
+only typeface used here, reserved for this moment; it does not follow
+the SF Pro system-font change made to body copy.
 
 ## Logo mark
 
@@ -247,8 +270,8 @@ mark) when redesigning, and don't reintroduce color into it.
 ## Typography
 
 - Display: **Fraunces**, weight 600 only, tight negative tracking (`-0.01em`). Used for h1/h2, price amounts, and stat numbers.
-- Body: **Inter**, weight 400 for paragraphs, 500–700 for labels/kickers/buttons.
-- Intro decode: **monospace** (`ui-monospace`/SF Mono/Consolas), uppercase, wide-tracked — reserved exclusively for the intro overlay, never used elsewhere on the page.
+- Body: **native system sans** (SF Pro on Mac/iOS, Segoe UI on Windows, Roboto on Android, Inter as the web-font fallback elsewhere), weight 400 for paragraphs, 500–700 for labels/kickers/buttons.
+- Intro decode: **monospace** (`ui-monospace`/SF Mono/Consolas), uppercase, wide-tracked, sized to ~6% of the smaller viewport dimension — reserved exclusively for the intro overlay, deliberately does not follow the body's system-font change, never used elsewhere on the page.
 - Kickers (`{typography.kicker}`) are small, bold, uppercase, wide-tracked, colored `{colors.accent-dark}`.
 - Never bold the Fraunces display weight beyond 600.
 
@@ -268,7 +291,7 @@ mark) when redesigning, and don't reintroduce color into it.
 ### Do
 - Keep the accent achromatic — off-white for emphasis, never a hue, anywhere in the site chrome.
 - Let the app-window mockup's tile content stay colorful; it's the intentional single exception, not a loophole to widen.
-- Use Fraunces for anything that needs to feel like a headline or a "big number" (price, stat); use Inter for everything else; monospace only for the intro.
+- Use Fraunces for anything that needs to feel like a headline or a "big number" (price, stat); use the system-sans body stack for everything else; monospace only for the intro.
 - Alternate base-dark → elevated-card → true-black → soft-dark for section pacing; the two true-black sections (privacy, final CTA) are not adjacent, so reusing the same tone for both reads as a deliberate bookend, not a mistake.
 - Reuse the existing radius scale (`{rounded.s..xl}`, plus `pill`) instead of introducing new radii.
 - When pairing an off-white background with text (buttons, ribbons), always use a dark text color (`{colors.bg}`), never white-on-white.
@@ -276,9 +299,11 @@ mark) when redesigning, and don't reintroduce color into it.
 ### Don't
 - Don't introduce a second saturated accent color anywhere in the chrome; `{colors.teal}` stays a desaturated one-off, not a second brand color.
 - Don't desaturate the mockup's tile content to "match" the monochrome shell; the contrast is the point.
-- Don't copy another product's exact typeface, color values, or logo mark onto this site, even structurally-similar ones — Fraunces/Inter and the 2×2 mark are Equinoia's own identity.
+- Don't copy another product's exact typeface, color values, or logo mark onto this site, even structurally-similar ones — Fraunces, the system-sans body stack, and the 2×2 mark are Equinoia's own identity.
 - Don't add colored/tinted shadows; all elevation on the dark canvas is black-based, with an off-white glow reserved for the one "featured" moment (price-card-highlight).
-- Don't replay the intro overlay more than once per session, and don't let it exceed ~1.5s — it should always land comfortably under the 2s ceiling, not skirt it.
+- Don't replay the intro overlay more than once per session, and don't let it exceed ~1.6s — it should always land comfortably under the 2s ceiling, not skirt it.
+- Don't regenerate the intro's glitch field (or any future full-screen decorative animation) from scratch every frame. That's a large-area synchronized flash and a genuine photosensitive-seizure risk, not just a performance or taste concern — desynchronized, rate-limited change per element is a hard requirement, not an option.
+- Don't try to embed "SF Pro" as a downloadable web font file; Apple's license doesn't permit it. The system-font stack (`-apple-system`, `BlinkMacSystemFont`) is the only correct way to render it on the web.
 
 ## Known gaps
 
