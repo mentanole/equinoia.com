@@ -128,16 +128,34 @@ components:
     rounded: pill
     fontSize: 0.82rem
     fontWeight: 600
-  app-window-mockup:
+    note: "Legacy token, superseded by hero-frame-tag in the hero itself but still the pattern for any future inline eyebrow pill elsewhere on the page."
+  hero-frame:
     backgroundColor: "{colors.paper}"
-    shadow: "{shadows.window}"
-    rounded: 14px
-    note: "The hero's signature visual — a fake app titlebar + sidebar + masonry tile grid. The chrome (titlebar, sidebar, cards) is monochrome; the tile CONTENT (photo gradients, palette swatches, texture) stays in real color deliberately, representing the user's actual colorful reference library inside the app."
-  intro-overlay:
+    border: "1px solid {colors.line}"
+    rounded: 32px
+    shadow: "{shadows.card}"
+    note: "The whole hero is one large rounded card (structure adapted from an IntegratedBio/Mobbin reference the user provided): a floating tag+dot pill top-left, the headline, the real app-window mockup as the card's central visual (recessed to {colors.bg}, not {colors.paper}, so it reads as a well inset into the card), then a bottom bar with supporting copy left and CTAs right. This pattern is scoped to the hero only — don't extend the framed-card treatment to other sections without being asked."
+  hero-frame-tag:
     backgroundColor: "{colors.bg}"
+    textColor: "{colors.ink-soft}"
+    rounded: pill
+    typography: "{typography.kicker}"
+    note: "Small pill with a leading {tag-dot} (6px circle, accent-colored, soft accent-soft halo). Floats at the top of hero-frame, replacing the old standalone eyebrow pill."
+  hero-cta-pill:
+    backgroundColor: "{colors.accent}"
+    textColor: "{colors.bg}"
+    rounded: pill
+    note: "Primary hero CTA: pill with left-padded label text and a trailing circular badge (cta-arrow: {colors.bg} fill, {colors.accent} arrow glyph) — an inverted-contrast accent nested inside the pill, echoing the reference's dark-pill-plus-light-circle pairing but flipped for this site's light-on-dark primary button convention."
+  app-window-mockup:
+    backgroundColor: "{colors.bg}"
+    shadow: "none (border only, per {colors.line})"
+    rounded: 14px
+    note: "The hero's signature visual — a fake app titlebar + sidebar + masonry tile grid. Now nested inside hero-frame rather than floating on its own, so it sits on {colors.bg} (recessed) instead of {colors.paper} (would blend into the frame) and carries no shadow of its own. The chrome (titlebar, sidebar, cards) is monochrome; the tile CONTENT (photo gradients, palette swatches, texture) stays in real color deliberately, representing the user's actual colorful reference library inside the app."
+  intro-overlay:
+    backgroundColor: "{colors.dark-bg}"
     textColor: "{colors.ink}"
     typography: "{typography.intro-decode}"
-    note: "Fixed, full-viewport <canvas>, z-index above everything including the grain layer. ctOS-style glitch field: ~90 flickering rects/triangles plus dot noise, density ramping down as the 'EQUINOIA' decode text (character-scramble) resolves in the center, all drawn with a yellow/blue chromatic-aberration triple-draw (warm + cool offset copies under the off-white core). Runs once per browser session (sessionStorage-gated), total runtime ~1.5-1.6s including fade-out, always well under the 2s ceiling. Skippable via click or keypress. Honors prefers-reduced-motion by skipping straight to a static resolved word with no glitch field."
+    note: "Fixed, full-viewport <canvas> on true black, z-index above everything including the grain layer. ctOS-style glitch field: a persistent pool of ~34 rects/triangles plus ~70 dots, each independently refreshed at ~2.5%/frame (desynchronized, flash-safe — see Do's and Don'ts), density trimmed as the 'EQUINOIA' decode text (character-scramble, small/understated by design) resolves in the center, all drawn with a yellow/blue chromatic-aberration triple-draw. Runs once per browser session (sessionStorage-gated), total runtime ~1.4-1.6s including fade-out, well under the 2s ceiling. Skippable via click or keypress. Honors prefers-reduced-motion by skipping straight to a static resolved word with no glitch field."
   feature-card-visual:
     backgroundColor: "{colors.paper}"
     border: "1px solid {colors.line}"
@@ -212,7 +230,8 @@ value rather than hue:
 ## Intro decode
 
 Modeled on the Watch Dogs 2 "ctOS" transition: a fixed full-viewport
-`<canvas>` (`{colors.bg}`) holds a field of glitch rectangles and
+`<canvas>` (`{colors.dark-bg}`, true black rather than the page's base
+`{colors.bg}`) holds a field of glitch rectangles and
 triangles (sizes 4-60px) plus 2px dot noise, drawn with a
 chromatic-aberration triple-draw (a warm-yellow copy offset -1.5px, a
 cool-blue copy offset +1.5px, the off-white core on top at 75%
@@ -271,7 +290,7 @@ mark) when redesigning, and don't reintroduce color into it.
 
 - Display: **Fraunces**, weight 600 only, tight negative tracking (`-0.01em`). Used for h1/h2, price amounts, and stat numbers.
 - Body: **native system sans** (SF Pro on Mac/iOS, Segoe UI on Windows, Roboto on Android, Inter as the web-font fallback elsewhere), weight 400 for paragraphs, 500–700 for labels/kickers/buttons.
-- Intro decode: **monospace** (`ui-monospace`/SF Mono/Consolas), uppercase, wide-tracked, sized to ~6% of the smaller viewport dimension — reserved exclusively for the intro overlay, deliberately does not follow the body's system-font change, never used elsewhere on the page.
+- Intro decode: **monospace** (`ui-monospace`/SF Mono/Consolas), uppercase, wide-tracked, sized to ~2.2% of the smaller viewport dimension (floored at 13px) — small and understated by design, not a headline moment. Reserved exclusively for the intro overlay, deliberately does not follow the body's system-font change, never used elsewhere on the page.
 - Kickers (`{typography.kicker}`) are small, bold, uppercase, wide-tracked, colored `{colors.accent-dark}`.
 - Never bold the Fraunces display weight beyond 600.
 
@@ -304,6 +323,7 @@ mark) when redesigning, and don't reintroduce color into it.
 - Don't replay the intro overlay more than once per session, and don't let it exceed ~1.6s — it should always land comfortably under the 2s ceiling, not skirt it.
 - Don't regenerate the intro's glitch field (or any future full-screen decorative animation) from scratch every frame. That's a large-area synchronized flash and a genuine photosensitive-seizure risk, not just a performance or taste concern — desynchronized, rate-limited change per element is a hard requirement, not an option.
 - Don't try to embed "SF Pro" as a downloadable web font file; Apple's license doesn't permit it. The system-font stack (`-apple-system`, `BlinkMacSystemFont`) is the only correct way to render it on the web.
+- Don't extend the hero-frame's rounded-card treatment to other sections without being asked; it was scoped deliberately to the hero when adapting a reference site's layout. Feature rows, pricing, FAQ, etc. keep their existing flat/card patterns.
 
 ## Known gaps
 
