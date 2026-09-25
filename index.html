@@ -14,6 +14,18 @@
 </head>
 <body>
 
+<script>
+  if (sessionStorage.getItem('eq-intro-seen')) {
+    document.documentElement.classList.add('no-intro');
+  } else {
+    sessionStorage.setItem('eq-intro-seen', '1');
+  }
+</script>
+
+<div id="intro" aria-hidden="true">
+  <span id="intro-text" class="intro-text">EQUINOIA</span>
+</div>
+
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="nav" id="nav">
