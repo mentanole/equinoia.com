@@ -64,10 +64,10 @@ if (introEl && !document.documentElement.classList.contains('no-intro')) {
 
   const w = () => window.innerWidth;
   const h = () => window.innerHeight;
-  const fontSize = () => Math.min(w(), h()) * 0.06;
+  const fontSize = () => Math.max(13, Math.min(w(), h()) * 0.022);
 
   if (reduceMotion) {
-    ctx.fillStyle = '#0E0E0D';
+    ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, w(), h());
     drawGlitchText(target, w() / 2, h() / 2, fontSize());
     setTimeout(finishIntro, 250);
@@ -96,7 +96,7 @@ if (introEl && !document.documentElement.classList.contains('no-intro')) {
       const progress = Math.min((now - start) / duration, 1);
       const cw = w(), ch = h();
 
-      ctx.fillStyle = '#0E0E0D';
+      ctx.fillStyle = '#000000';
       ctx.fillRect(0, 0, cw, ch);
 
       // density ramps down by trimming the pool, not by mass-regenerating it
@@ -122,7 +122,7 @@ if (introEl && !document.documentElement.classList.contains('no-intro')) {
       if (progress < 1) {
         requestAnimationFrame(frame);
       } else {
-        ctx.fillStyle = '#0E0E0D';
+        ctx.fillStyle = '#000000';
         ctx.fillRect(0, 0, cw, ch);
         drawGlitchText(target, cw / 2, ch / 2, fontSize());
         setTimeout(finishIntro, 220);

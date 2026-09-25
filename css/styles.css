@@ -96,7 +96,7 @@ code{
   position: fixed;
   inset: 0;
   z-index: 2000;
-  background: var(--bg);
+  background: var(--dark-bg);
   transition: opacity 0.35s ease;
 }
 #intro.intro-done{ opacity: 0; pointer-events: none; }
