@@ -1,7 +1,7 @@
 ---
 version: 2.0
 name: Equinoia-design-system
-description: A dark, monochrome marketing site for Equinoia, a local-first Windows reference manager. The system anchors on a near-black canvas with a serif display face (Fraunces) for headlines, a humanist sans (Inter) for body copy, and an off-white accent used for CTAs and highlights instead of a hue. The one deliberate exception is the app-window mockup's own "content" (photo/palette/texture tiles), which keeps real color to read as the user's actual colorful reference library inside an otherwise monochrome shell. A short "decode" intro (scrambled monospace text resolving to "EQUINOIA") plays once per session before the page reveals.
+description: A dark, monochrome marketing site for Equinoia, a local-first Windows reference manager. The system anchors on a near-black canvas with a serif display face (Fraunces) for headlines, a humanist sans (Inter) for body copy, and an off-white accent used for CTAs and highlights instead of a hue. The one deliberate exception is the app-window mockup's own "content" (photo/palette/texture tiles), which keeps real color to read as the user's actual colorful reference library inside an otherwise monochrome shell. A short ctOS-style "decode" intro (a canvas-rendered field of flickering glitch blocks with yellow/blue chromatic-aberration fringing, resolving into "EQUINOIA") plays once per session before the page reveals.
 
 colors:
   bg: "#0E0E0D"
@@ -75,10 +75,10 @@ typography:
     fontWeight: 600
   intro-decode:
     fontFamily: "ui-monospace, 'SF Mono', Consolas, monospace"
-    fontSize: "clamp(1.6rem, 6vw, 2.8rem)"
-    fontWeight: 500
-    letterSpacing: 0.14em
-    note: "Uppercase only, intro overlay's decode text. The only monospace usage on the site."
+    fontSize: "~10% of min(viewport width, viewport height), canvas-rendered"
+    fontWeight: 700
+    letterSpacing: "~12% of font size"
+    note: "Uppercase only, drawn to <canvas> with a yellow/blue chromatic-aberration triple-draw, not a DOM/CSS text node. The only monospace usage on the site."
 
 rounded:
   s: 6px
@@ -136,7 +136,7 @@ components:
     backgroundColor: "{colors.bg}"
     textColor: "{colors.ink}"
     typography: "{typography.intro-decode}"
-    note: "Fixed, full-viewport, z-index above everything including the grain layer. Plays a character-scramble decode of 'EQUINOIA' once per browser session (sessionStorage-gated), total runtime under 1.5s including fade-out, always well under the 2s ceiling. Skippable via click or keypress. Honors prefers-reduced-motion by skipping straight to the resolved word."
+    note: "Fixed, full-viewport <canvas>, z-index above everything including the grain layer. ctOS-style glitch field: ~90 flickering rects/triangles plus dot noise, density ramping down as the 'EQUINOIA' decode text (character-scramble) resolves in the center, all drawn with a yellow/blue chromatic-aberration triple-draw (warm + cool offset copies under the off-white core). Runs once per browser session (sessionStorage-gated), total runtime ~1.5-1.6s including fade-out, always well under the 2s ceiling. Skippable via click or keypress. Honors prefers-reduced-motion by skipping straight to a static resolved word with no glitch field."
   feature-card-visual:
     backgroundColor: "{colors.paper}"
     border: "1px solid {colors.line}"
@@ -205,20 +205,26 @@ value rather than hue:
 
 ## Intro decode
 
-On first load in a session, a fixed full-viewport overlay
-(`{colors.bg}`) shows a monospace string that scrambles through random
-characters and resolves, left-to-right with slight per-letter
-randomness, into "EQUINOIA," then holds briefly and fades. Total
-runtime is tuned to ~1.4s including the fade so it never approaches the
-2s ceiling. It runs once per `sessionStorage` (a synchronous inline
-script at the top of `<body>` sets `html.no-intro` before first paint
-on repeat views, so it never flashes on reload/internal navigation
-within the same session). It's skippable by click or keypress, and
-`prefers-reduced-motion` users see the resolved word immediately
-instead of the scramble. Implementation lives in `js/main.js`
-(`#intro` block) and `css/styles.css` (`#intro` / `.intro-text`
-rules) — it's the only monospace typography on the site, reserved for
-this moment.
+Modeled on the Watch Dogs 2 "ctOS" transition: a fixed full-viewport
+`<canvas>` (`{colors.bg}`) fills with a flickering field of glitch
+rectangles and triangles (sizes 4-90px, re-randomized every frame,
+density ramping down over the animation) plus scattered 2px dot noise,
+all drawn with a chromatic-aberration triple-draw (a warm-yellow copy
+offset -2px, a cool-blue copy offset +2px, the off-white core on top —
+the one place hue appears outside the mockup tiles, and only for this
+~0.9s transient). A monospace "EQUINOIA" decodes in the center via the
+same character-scramble as before, sharing the fringe treatment, then
+holds briefly and the whole canvas fades. Total runtime is tuned to
+~1.5-1.6s including the fade so it stays safely under the 2s ceiling.
+It runs once per `sessionStorage` (a synchronous inline script at the
+top of `<body>` sets `html.no-intro` before first paint on repeat
+views, so it never flashes on reload/internal navigation within the
+same session). It's skippable by click or keypress, and
+`prefers-reduced-motion` users see the resolved word immediately with
+no glitch field. Implementation lives in `js/main.js` (`#intro` block,
+canvas drawing helpers `drawGlitchShape`/`drawGlitchText`) and
+`css/styles.css` (`#intro` / `#intro-canvas` rules) — monospace is the
+only typeface used here, reserved for this moment.
 
 ## Logo mark
 
