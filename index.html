@@ -7,9 +7,6 @@
 <meta name="description" content="Equinoia is a fast, local-first reference manager for Windows. Drag in images and inspiration from anywhere, tag them, and find any one of them in under a second. Free trial, $20 license for 2 computers.">
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -42,13 +39,6 @@
       Equinoia
     </a>
 
-    <nav class="nav-links" aria-label="Primary">
-      <a href="#features">Features</a>
-      <a href="#privacy">Your files</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#faq">FAQ</a>
-    </nav>
-
     <div class="nav-actions">
       <a href="#pricing" class="btn btn-ghost">Buy · $20</a>
       <a href="#download" class="btn btn-primary btn-small">Download free trial</a>
@@ -68,113 +58,33 @@
   </div>
 </header>
 
+<nav class="side-switcher" id="sideSwitcher" aria-label="Section navigation">
+  <ul class="side-switcher-track" id="sideSwitcherTrack">
+    <li data-target="hero"><a href="#hero">Home</a></li>
+    <li data-target="features"><a href="#features">Features</a></li>
+    <li data-target="privacy"><a href="#privacy">Your files</a></li>
+    <li data-target="pricing"><a href="#pricing">Pricing</a></li>
+    <li data-target="faq"><a href="#faq">FAQ</a></li>
+  </ul>
+</nav>
+
 <main id="main">
 
   <!-- HERO -->
-  <section class="hero">
-    <div class="hero-frame reveal">
-      <div class="hero-frame-tag">
+  <section class="hero" id="hero">
+    <canvas id="hero-sphere" class="hero-sphere" aria-hidden="true"></canvas>
+    <div class="hero-content reveal">
+      <p class="hero-tag">
         <span class="tag-dot" aria-hidden="true"></span>
         For Windows 10 &amp; 11 · No account needed
-      </div>
-
-      <h1>Every reference you save.<br>Actually findable again.</h1>
-
-      <div class="app-window-wrap">
-        <div class="app-window">
-          <div class="app-titlebar">
-            <div class="app-title">
-              <svg width="14" height="14" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-                <rect x="1" y="1" width="9" height="9" rx="2" fill="currentColor"/>
-                <rect x="12" y="1" width="9" height="9" rx="2" fill="currentColor" opacity="0.4"/>
-                <rect x="1" y="12" width="9" height="9" rx="2" fill="currentColor" opacity="0.4"/>
-                <rect x="12" y="12" width="9" height="9" rx="2" fill="currentColor"/>
-              </svg>
-              Equinoia · Design Inspiration.eqn
-            </div>
-            <div class="win-controls" aria-hidden="true">
-              <span class="wc wc-min">–</span>
-              <span class="wc wc-max">▢</span>
-              <span class="wc wc-close">×</span>
-            </div>
-          </div>
-          <div class="app-body">
-            <aside class="app-sidebar">
-              <div class="sidebar-search">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
-                Search 482 references…
-              </div>
-              <div class="sidebar-group">
-                <p class="sidebar-label">Libraries</p>
-                <ul>
-                  <li class="active">Design Inspiration</li>
-                  <li>Photography</li>
-                  <li>Client: Northwind</li>
-                </ul>
-              </div>
-              <div class="sidebar-group">
-                <p class="sidebar-label">Folders</p>
-                <ul>
-                  <li>Moodboards <span class="count">86</span></li>
-                  <li>UI patterns <span class="count">214</span></li>
-                  <li>Color palettes <span class="count">37</span></li>
-                  <li>Type specimens <span class="count">52</span></li>
-                  <li>Textures <span class="count">93</span></li>
-                </ul>
-              </div>
-              <div class="sidebar-group">
-                <p class="sidebar-label">Tags</p>
-                <div class="tag-pills">
-                  <span>editorial</span><span>dark-ui</span><span>grain</span><span>3d</span><span>type-led</span>
-                </div>
-              </div>
-            </aside>
-            <div class="app-main">
-              <div class="grid-toolbar">
-                <span>Moodboards <span class="dim">· 86 items</span></span>
-                <div class="toolbar-right">
-                  <span class="dim">Sort: Recently added</span>
-                </div>
-              </div>
-              <div class="tile-grid" aria-hidden="true">
-                <div class="tile t-shot span-a" style="--h:16;--h2:210;"></div>
-                <div class="tile t-ui span-b"><span></span><span></span><span class="short"></span></div>
-                <div class="tile t-shot span-a" style="--h:250;--h2:35;"></div>
-                <div class="tile t-palette span-c">
-                  <i style="--c:#C1521A"></i><i style="--c:#33534B"></i><i style="--c:#E4C9A8"></i><i style="--c:#1B1A17"></i><i style="--c:#8C7A5B"></i>
-                </div>
-                <div class="tile t-type span-b">Aa</div>
-                <div class="tile t-shot span-c" style="--h:340;--h2:95;"></div>
-                <div class="tile t-shot span-b" style="--h:180;--h2:260;"></div>
-                <div class="tile t-texture span-a"></div>
-                <div class="tile t-shot span-b" style="--h:20;--h2:280;"></div>
-                <div class="tile t-ui span-a"><span></span><span class="short"></span><span></span></div>
-                <div class="tile t-shot span-c" style="--h:60;--h2:200;"></div>
-                <div class="tile t-palette span-b">
-                  <i style="--c:#3E5C55"></i><i style="--c:#C1521A"></i><i style="--c:#F0D9C9"></i><i style="--c:#22201A"></i>
-                </div>
-                <div class="tile t-shot span-a" style="--h:300;--h2:140;"></div>
-                <div class="tile t-texture span-b"></div>
-                <div class="tile t-type span-c">Ag</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-frame-bottom">
-        <p class="hero-sub">Drag in images and screenshots from anywhere, tag them as you go, and find any one in under a second.</p>
-        <div class="hero-frame-actions">
-          <a href="#pricing" class="hero-text-link">Buy license · $20</a>
-          <a href="#download" class="hero-cta-pill">
-            Download free trial
-            <span class="cta-arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
+      </p>
+      <h1>Next level creativity comes true.</h1>
+      <p class="hero-sub">Drag in images and screenshots from anywhere, tag them as you go, and find any one in under a second.</p>
+      <div class="hero-actions">
+        <a href="#download" class="btn btn-primary btn-lg">Download free trial</a>
+        <a href="#pricing" class="btn btn-outline-light btn-lg">Buy license · $20</a>
       </div>
     </div>
-
-    <p class="app-window-caption">Every tile above is a real file living in a real folder on disk. Not a database only Equinoia can read.</p>
   </section>
 
   <!-- LOGOS / TRUST STRIP -->
