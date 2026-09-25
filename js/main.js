@@ -136,6 +136,102 @@ if (introEl && !document.documentElement.classList.contains('no-intro')) {
   introEl.addEventListener('click', skipIntro, { once: true });
 }
 
+// Hero sphere — rotating particle globe
+const sphereCanvas = document.getElementById('hero-sphere');
+if (sphereCanvas) {
+  const sctx = sphereCanvas.getContext('2d');
+  const sDpr = Math.min(window.devicePixelRatio || 1, 2);
+  const heroSection = document.getElementById('hero');
+  const sphereReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let sw = 0, sh = 0;
+  const resizeSphere = () => {
+    const rect = heroSection.getBoundingClientRect();
+    sw = rect.width;
+    sh = rect.height;
+    sphereCanvas.width = sw * sDpr;
+    sphereCanvas.height = sh * sDpr;
+    sphereCanvas.style.width = sw + 'px';
+    sphereCanvas.style.height = sh + 'px';
+    sctx.setTransform(sDpr, 0, 0, sDpr, 0, 0);
+  };
+  resizeSphere();
+  window.addEventListener('resize', resizeSphere);
+
+  // Particles evenly distributed on a sphere (Fibonacci sphere), with a
+  // small per-particle jitter so the surface reads as fine grain rather
+  // than a perfectly smooth shell.
+  const PARTICLE_COUNT = 4200;
+  const particles = [];
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const py = 1 - (i / (PARTICLE_COUNT - 1)) * 2;
+    const radiusAtY = Math.sqrt(Math.max(0, 1 - py * py));
+    const theta = goldenAngle * i;
+    const jitter = 0.9 + Math.random() * 0.14;
+    particles.push({
+      x: Math.cos(theta) * radiusAtY * jitter,
+      y: py * jitter,
+      z: Math.sin(theta) * radiusAtY * jitter,
+      size: 0.6 + Math.random() * 1.6,
+      twinkle: Math.random() * Math.PI * 2,
+    });
+  }
+
+  let sphereVisible = true;
+  if ('IntersectionObserver' in window) {
+    const sphereIo = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { sphereVisible = entry.isIntersecting; });
+    }, { threshold: 0 });
+    sphereIo.observe(heroSection);
+  }
+
+  const TILT = 0.16;
+  const cosTilt = Math.cos(TILT), sinTilt = Math.sin(TILT);
+
+  const drawSphere = (angle, time) => {
+    const cx = sw / 2, cy = sh / 2;
+    const radius = Math.min(sw, sh) * 0.44;
+    const cosA = Math.cos(angle), sinA = Math.sin(angle);
+
+    sctx.clearRect(0, 0, sw, sh);
+
+    const projected = particles.map((p) => {
+      const x = p.x * cosA + p.z * sinA;
+      const zRot = -p.x * sinA + p.z * cosA;
+      const y = p.y * cosTilt - zRot * sinTilt;
+      const z = p.y * sinTilt + zRot * cosTilt;
+      return { x, y, z, size: p.size, twinkle: p.twinkle };
+    });
+    projected.sort((a, b) => a.z - b.z);
+
+    projected.forEach((p) => {
+      const depth = (p.z + 1) / 2; // 0 = far side, 1 = near side
+      const scale = 0.72 + depth * 0.5;
+      const screenX = cx + p.x * radius * scale;
+      const screenY = cy + p.y * radius * scale;
+      const twinkle = 0.85 + 0.15 * Math.sin(time * 0.0015 + p.twinkle);
+      const alpha = (0.18 + depth * 0.72) * twinkle;
+      const size = p.size * (0.6 + depth * 0.8);
+      sctx.beginPath();
+      sctx.fillStyle = `rgba(243,242,238,${alpha.toFixed(3)})`;
+      sctx.arc(screenX, screenY, size / 2, 0, Math.PI * 2);
+      sctx.fill();
+    });
+  };
+
+  if (sphereReduceMotion) {
+    drawSphere(0, 0);
+  } else {
+    const rotationSpeed = 0.00022; // one full turn roughly every 47s
+    const loop = (time) => {
+      if (sphereVisible) drawSphere(time * rotationSpeed, time);
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
+}
+
 // Nav shrink + mobile menu
 const nav = document.getElementById('nav');
 const navToggle = document.getElementById('navToggle');
@@ -188,3 +284,31 @@ document.querySelectorAll('.faq-item').forEach(item => {
     }
   });
 });
+
+// Side switcher — vertical section indicator (active + 1 neighbor each side)
+const sideTrack = document.getElementById('sideSwitcherTrack');
+if (sideTrack) {
+  const sideItems = Array.from(sideTrack.children);
+  const sectionIds = sideItems.map(li => li.dataset.target);
+  const ITEM_HEIGHT = 32;
+  const CONTAINER_HEIGHT = 96;
+
+  const updateSideSwitcher = () => {
+    const refLine = window.innerHeight * 0.4;
+    let activeIndex = 0;
+    sectionIds.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= refLine) activeIndex = i;
+    });
+    sideItems.forEach((li, i) => {
+      li.classList.toggle('is-active', i === activeIndex);
+      li.classList.toggle('is-adjacent', Math.abs(i - activeIndex) === 1);
+    });
+    const offset = (CONTAINER_HEIGHT / 2 - ITEM_HEIGHT / 2) - activeIndex * ITEM_HEIGHT;
+    sideTrack.style.transform = `translateY(${offset}px)`;
+  };
+
+  window.addEventListener('scroll', updateSideSwitcher, { passive: true });
+  window.addEventListener('resize', updateSideSwitcher);
+  updateSideSwitcher();
+}
