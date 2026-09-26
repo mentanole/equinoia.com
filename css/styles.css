@@ -88,28 +88,6 @@ code{
   font-size: 0.88em;
 }
 
-/* ============================================================
-   Intro decode
-   ============================================================ */
-
-#intro{
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  background: var(--dark-bg);
-  transition: opacity 0.35s ease;
-}
-#intro.intro-done{ opacity: 0; pointer-events: none; }
-html.no-intro #intro{ display: none; }
-
-#intro-canvas{
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 .skip-link{
   position:absolute; left:-999px; top:0;
 }

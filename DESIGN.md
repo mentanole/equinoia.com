@@ -1,7 +1,7 @@
 ---
 version: 2.0
 name: Equinoia-design-system
-description: A dark, monochrome marketing site for Equinoia, a local-first Windows reference manager. The system anchors on a near-black canvas with a serif display face (Fraunces) for headlines, and a native system-font sans (SF Pro on Mac/iOS via -apple-system, matched natively on other platforms) for body copy, with an off-white accent used for CTAs and highlights instead of a hue. The one deliberate exception is the app-window mockup's own "content" (photo/palette/texture tiles), which keeps real color to read as the user's actual colorful reference library inside an otherwise monochrome shell. A short ctOS-style "decode" intro (a canvas-rendered field of glitch blocks with yellow/blue chromatic-aberration fringing, resolving into "EQUINOIA") plays once per session before the page reveals — built with flash-safety as a hard constraint, not just an aesthetic flourish.
+description: A dark, monochrome marketing site for Equinoia, a local-first Windows reference manager. The system anchors on a near-black canvas with a serif display face (Fraunces) for headlines, and a native system-font sans (SF Pro on Mac/iOS via -apple-system, matched natively on other platforms) for body copy, with an off-white accent used for CTAs and highlights instead of a hue. The one deliberate exception is the app-window mockup's own "content" (photo/palette/texture tiles), which keeps real color to read as the user's actual colorful reference library inside an otherwise monochrome shell.
 
 colors:
   bg: "#0E0E0D"
@@ -74,12 +74,6 @@ typography:
     fontFamily: "{typography.body-md.fontFamily}"
     fontSize: 0.95rem
     fontWeight: 600
-  intro-decode:
-    fontFamily: "ui-monospace, 'SF Mono', Consolas, monospace"
-    fontSize: "~10% of min(viewport width, viewport height), canvas-rendered"
-    fontWeight: 700
-    letterSpacing: "~12% of font size"
-    note: "Uppercase only, drawn to <canvas> with a yellow/blue chromatic-aberration triple-draw, not a DOM/CSS text node. The only monospace usage on the site."
 
 rounded:
   s: 6px
@@ -151,11 +145,6 @@ components:
     shadow: "none (border only, per {colors.line})"
     rounded: 14px
     note: "The hero's signature visual — a fake app titlebar + sidebar + masonry tile grid. Now nested inside hero-frame rather than floating on its own, so it sits on {colors.bg} (recessed) instead of {colors.paper} (would blend into the frame) and carries no shadow of its own. The chrome (titlebar, sidebar, cards) is monochrome; the tile CONTENT (photo gradients, palette swatches, texture) stays in real color deliberately, representing the user's actual colorful reference library inside the app."
-  intro-overlay:
-    backgroundColor: "{colors.dark-bg}"
-    textColor: "{colors.ink}"
-    typography: "{typography.intro-decode}"
-    note: "Fixed, full-viewport <canvas> on true black, z-index above everything including the grain layer. ctOS-style glitch field: a persistent pool of ~34 rects/triangles plus ~70 dots, each independently refreshed at ~2.5%/frame (desynchronized, flash-safe — see Do's and Don'ts), density trimmed as the 'EQUINOIA' decode text (character-scramble, small/understated by design) resolves in the center, all drawn with a yellow/blue chromatic-aberration triple-draw. Runs once per browser session (sessionStorage-gated), total runtime ~1.4-1.6s including fade-out, well under the 2s ceiling. Skippable via click or keypress. Honors prefers-reduced-motion by skipping straight to a static resolved word with no glitch field."
   feature-card-visual:
     backgroundColor: "{colors.paper}"
     border: "1px solid {colors.line}"
@@ -189,8 +178,8 @@ components:
     border: "1px solid {colors.line}"
     rounded: m
   nav:
-    backgroundColor: "rgba(14,14,13,0.82)"
-    note: "Sticky, backdrop-blur, border appears only after scroll (.nav.scrolled)."
+    backgroundColor: transparent
+    note: "Sticky, no fill of its own — .nav-inner runs mix-blend-mode: difference so the logo/links/buttons invert against whatever scrolls underneath."
 ---
 
 ## Overview
@@ -227,47 +216,6 @@ value rather than hue:
 3. **True black** (`{colors.dark-bg}`) — the privacy section and the final CTA band, the page's two darkest "punctuation" moments
 4. **Soft dark** (`{colors.bg-alt}`) — footer
 
-## Intro decode
-
-Modeled on the Watch Dogs 2 "ctOS" transition: a fixed full-viewport
-`<canvas>` (`{colors.dark-bg}`, true black rather than the page's base
-`{colors.bg}`) holds a field of glitch rectangles and
-triangles (sizes 4-60px) plus 2px dot noise, drawn with a
-chromatic-aberration triple-draw (a warm-yellow copy offset -1.5px, a
-cool-blue copy offset +1.5px, the off-white core on top at 75%
-opacity — the one place hue appears outside the mockup tiles, and only
-for this ~0.9s transient). A monospace "EQUINOIA" decodes in the
-center via a character-scramble, sized to ~6% of the smaller viewport
-dimension so it never dominates the frame, sharing the fringe
-treatment, then holds briefly and the whole canvas fades. Total
-runtime is tuned to ~1.4-1.6s including the fade, safely under the 2s
-ceiling.
-
-**Flash safety is load-bearing, not decorative.** The block/dot field
-is a persistent pool where each element independently has only a ~2.5%
-chance per frame of being replaced — roughly 1.5 changes/second per
-element, under the WCAG general-flash threshold of 3/second — instead
-of the whole field being regenerated every frame. That keeps any given
-screen region's flicker rate low and desynchronized rather than a
-large-area synchronized strobe. Density ramps down by trimming the
-pool's length, never by mass-regenerating it. Don't "simplify" this
-back to a full per-frame regeneration — that was the original
-implementation and it was a genuine photosensitive-seizure risk, not
-just a taste call.
-
-It runs once per `sessionStorage` (a synchronous inline script at the
-top of `<body>` sets `html.no-intro` before first paint on repeat
-views, so it never flashes on reload/internal navigation within the
-same session). It's skippable by click or keypress, and
-`prefers-reduced-motion` users see the resolved word immediately with
-no glitch field at all — though the base experience must stay
-flash-safe on its own, since not every photosensitive user has that OS
-setting enabled. Implementation lives in `js/main.js` (`#intro` block,
-canvas drawing helpers `drawGlitchShape`/`drawGlitchText`) and
-`css/styles.css` (`#intro` / `#intro-canvas` rules) — monospace is the
-only typeface used here, reserved for this moment; it does not follow
-the SF Pro system-font change made to body copy.
-
 ## Logo mark
 
 A 2×2 grid of rounded squares (`logo-mark` SVG in the nav): top-left
@@ -290,7 +238,6 @@ mark) when redesigning, and don't reintroduce color into it.
 
 - Display: **Fraunces**, weight 600 only, tight negative tracking (`-0.01em`). Used for h1/h2, price amounts, and stat numbers.
 - Body: **native system sans** (SF Pro on Mac/iOS, Segoe UI on Windows, Roboto on Android, Inter as the web-font fallback elsewhere), weight 400 for paragraphs, 500–700 for labels/kickers/buttons.
-- Intro decode: **monospace** (`ui-monospace`/SF Mono/Consolas), uppercase, wide-tracked, sized to ~2.2% of the smaller viewport dimension (floored at 13px) — small and understated by design, not a headline moment. Reserved exclusively for the intro overlay, deliberately does not follow the body's system-font change, never used elsewhere on the page.
 - Kickers (`{typography.kicker}`) are small, bold, uppercase, wide-tracked, colored `{colors.accent-dark}`.
 - Never bold the Fraunces display weight beyond 600.
 
@@ -310,7 +257,7 @@ mark) when redesigning, and don't reintroduce color into it.
 ### Do
 - Keep the accent achromatic — off-white for emphasis, never a hue, anywhere in the site chrome.
 - Let the app-window mockup's tile content stay colorful; it's the intentional single exception, not a loophole to widen.
-- Use Fraunces for anything that needs to feel like a headline or a "big number" (price, stat); use the system-sans body stack for everything else; monospace only for the intro.
+- Use Fraunces for anything that needs to feel like a headline or a "big number" (price, stat); use the system-sans body stack for everything else.
 - Alternate base-dark → elevated-card → true-black → soft-dark for section pacing; the two true-black sections (privacy, final CTA) are not adjacent, so reusing the same tone for both reads as a deliberate bookend, not a mistake.
 - Reuse the existing radius scale (`{rounded.s..xl}`, plus `pill`) instead of introducing new radii.
 - When pairing an off-white background with text (buttons, ribbons), always use a dark text color (`{colors.bg}`), never white-on-white.
@@ -320,8 +267,7 @@ mark) when redesigning, and don't reintroduce color into it.
 - Don't desaturate the mockup's tile content to "match" the monochrome shell; the contrast is the point.
 - Don't copy another product's exact typeface, color values, or logo mark onto this site, even structurally-similar ones — Fraunces, the system-sans body stack, and the 2×2 mark are Equinoia's own identity.
 - Don't add colored/tinted shadows; all elevation on the dark canvas is black-based, with an off-white glow reserved for the one "featured" moment (price-card-highlight).
-- Don't replay the intro overlay more than once per session, and don't let it exceed ~1.6s — it should always land comfortably under the 2s ceiling, not skirt it.
-- Don't regenerate the intro's glitch field (or any future full-screen decorative animation) from scratch every frame. That's a large-area synchronized flash and a genuine photosensitive-seizure risk, not just a performance or taste concern — desynchronized, rate-limited change per element is a hard requirement, not an option.
+- If a future full-screen decorative animation is added, don't regenerate it from scratch every frame — a large-area synchronized flash is a genuine photosensitive-seizure risk, not just a performance concern. Use desynchronized, rate-limited change per element instead.
 - Don't try to embed "SF Pro" as a downloadable web font file; Apple's license doesn't permit it. The system-font stack (`-apple-system`, `BlinkMacSystemFont`) is the only correct way to render it on the web.
 - Don't extend the hero-frame's rounded-card treatment to other sections without being asked; it was scoped deliberately to the hero when adapting a reference site's layout. Feature rows, pricing, FAQ, etc. keep their existing flat/card patterns.
 
