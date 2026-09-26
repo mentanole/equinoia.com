@@ -232,14 +232,9 @@ if (sphereCanvas) {
   }
 }
 
-// Nav shrink + mobile menu
-const nav = document.getElementById('nav');
+// Mobile menu toggle
 const navToggle = document.getElementById('navToggle');
 const mobileMenu = document.getElementById('mobileMenu');
-
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 8);
-}, { passive: true });
 
 navToggle.addEventListener('click', () => {
   const open = mobileMenu.classList.toggle('open');
@@ -285,21 +280,30 @@ document.querySelectorAll('.faq-item').forEach(item => {
   });
 });
 
-// Side switcher — vertical section indicator (active + 1 neighbor each side)
+// Side switcher — vertical section indicator, macOS-dock-style magnify on hover
+const sideSwitcher = document.getElementById('sideSwitcher');
 const sideTrack = document.getElementById('sideSwitcherTrack');
-if (sideTrack) {
+if (sideSwitcher && sideTrack) {
   const sideItems = Array.from(sideTrack.children);
   const sectionIds = sideItems.map(li => li.dataset.target);
   const ITEM_HEIGHT = 32;
   const CONTAINER_HEIGHT = 96;
+  const EXPANDED_HEIGHT = sideItems.length * ITEM_HEIGHT + 48;
+  const MAGNIFY_RADIUS = 50; // px, falloff distance for the dock effect
+  const MAX_HEIGHT_BOOST = 0.5; // li grows up to 1.5x at the cursor
 
-  const updateSideSwitcher = () => {
-    const refLine = window.innerHeight * 0.4;
-    let activeIndex = 0;
-    sectionIds.forEach((id, i) => {
-      const el = document.getElementById(id);
-      if (el && el.getBoundingClientRect().top <= refLine) activeIndex = i;
+  let activeIndex = 0;
+  let hovering = false;
+
+  const clearMagnify = () => {
+    sideItems.forEach((li) => {
+      li.style.removeProperty('--reveal');
+      li.style.removeProperty('--mag');
     });
+  };
+
+  const layoutFromScroll = () => {
+    if (hovering) return;
     sideItems.forEach((li, i) => {
       li.classList.toggle('is-active', i === activeIndex);
       li.classList.toggle('is-adjacent', Math.abs(i - activeIndex) === 1);
@@ -308,7 +312,47 @@ if (sideTrack) {
     sideTrack.style.transform = `translateY(${offset}px)`;
   };
 
-  window.addEventListener('scroll', updateSideSwitcher, { passive: true });
-  window.addEventListener('resize', updateSideSwitcher);
-  updateSideSwitcher();
+  const updateActiveFromScroll = () => {
+    const refLine = window.innerHeight * 0.4;
+    sectionIds.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= refLine) activeIndex = i;
+    });
+    layoutFromScroll();
+  };
+
+  const layoutForHover = () => {
+    sideItems.forEach((li) => li.classList.remove('is-adjacent'));
+    const offset = (EXPANDED_HEIGHT / 2) - (sideItems.length * ITEM_HEIGHT) / 2;
+    sideTrack.style.transform = `translateY(${offset}px)`;
+  };
+
+  sideSwitcher.addEventListener('mouseenter', () => {
+    hovering = true;
+    sideSwitcher.classList.add('is-hovering');
+    layoutForHover();
+  });
+
+  sideSwitcher.addEventListener('mousemove', (e) => {
+    const trackRect = sideTrack.getBoundingClientRect();
+    sideItems.forEach((li, i) => {
+      const itemCenter = trackRect.top + i * ITEM_HEIGHT + ITEM_HEIGHT / 2;
+      const dist = Math.abs(e.clientY - itemCenter);
+      const reveal = Math.max(0, 1 - dist / MAGNIFY_RADIUS);
+      const eased = reveal * reveal * (3 - 2 * reveal); // smoothstep falloff, dock-like
+      li.style.setProperty('--reveal', eased.toFixed(3));
+      li.style.setProperty('--mag', (1 + eased * MAX_HEIGHT_BOOST).toFixed(3));
+    });
+  });
+
+  sideSwitcher.addEventListener('mouseleave', () => {
+    hovering = false;
+    sideSwitcher.classList.remove('is-hovering');
+    clearMagnify();
+    layoutFromScroll();
+  });
+
+  window.addEventListener('scroll', updateActiveFromScroll, { passive: true });
+  window.addEventListener('resize', updateActiveFromScroll);
+  updateActiveFromScroll();
 }
