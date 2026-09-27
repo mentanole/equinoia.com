@@ -1,0 +1,11 @@
+{
+    "version": "0.1.2",
+    "notes": "Onboarding for first launch; import libraries from Eagle; cleaner photo/video viewer; accent color fix; removed Alt eyedropper",
+    "pub_date": "2026-09-27T22:19:56Z",
+    "platforms": {
+        "windows-x86_64": {
+            "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRdkxOTE15QmpNZ0d6WUVzazJmSitac3h2dWxZczdaV2dVVGN3bGd4QThPdG8vaktWZTducVlBSXk4U0tIUFR1RnpPMXBJVmVZdGYrUkI5eTB5cUxNZ3g2UWZveGlGYmdjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwNTQ3NTk2CWZpbGU6RXF1aW5vaWFfMC4xLjJfeDY0LXNldHVwLmV4ZQpXY3M3bkd5Yng5cnhrRFA3M1dBRzhEeHRnb1IzZWNMNlQ1WjVHL3pKenFEeWJlOEhIYm93M2crTDZrZTVzK2VIMXJaY09Wc21wcTlLeFZxYm5CK2lCZz09Cg==",
+            "url": "https://github.com/mentanole/equinoia.com/releases/download/v0.1.2/Equinoia_0.1.2_x64-setup.exe"
+        }
+    }
+}
