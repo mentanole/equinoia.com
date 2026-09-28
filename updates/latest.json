@@ -1,11 +1,11 @@
 {
-    "version": "0.1.2",
-    "notes": "Onboarding for first launch; import libraries from Eagle; cleaner photo/video viewer; accent color fix; removed Alt eyedropper",
-    "pub_date": "2026-09-27T22:19:56Z",
-    "platforms": {
-        "windows-x86_64": {
-            "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRdkxOTE15QmpNZ0d6WUVzazJmSitac3h2dWxZczdaV2dVVGN3bGd4QThPdG8vaktWZTducVlBSXk4U0tIUFR1RnpPMXBJVmVZdGYrUkI5eTB5cUxNZ3g2UWZveGlGYmdjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwNTQ3NTk2CWZpbGU6RXF1aW5vaWFfMC4xLjJfeDY0LXNldHVwLmV4ZQpXY3M3bkd5Yng5cnhrRFA3M1dBRzhEeHRnb1IzZWNMNlQ1WjVHL3pKenFEeWJlOEhIYm93M2crTDZrZTVzK2VIMXJaY09Wc21wcTlLeFZxYm5CK2lCZz09Cg==",
-            "url": "https://github.com/mentanole/equinoia.com/releases/download/v0.1.2/Equinoia_0.1.2_x64-setup.exe"
-        }
-    }
+    "version":  "0.1.3",
+    "notes":  "English log messages; readable color palette tooltip; fixed Storage pane header overlap; multi-select file-type filter (.jpg/.mp4/etc); text in card titles no longer fights drag-select; New Smart Collection moved into the add menu",
+    "pub_date":  "2026-09-27T23:18:42Z",
+    "platforms":  {
+                      "windows-x86_64":  {
+                                             "signature":  "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRdkxOTE15QmpNZ0QwTUJsK2NiRUpzKzkyZTVDbiszQVNMSFUwbm1SSy9rRE84TVN5YU1MSnQ4YmFUbG1pZllFMDdySXo2Wmt1T1FsY2xFdjZ1WkJ3SHFKOTQvOU4wWndnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwNTUxMTIyCWZpbGU6RXF1aW5vaWFfMC4xLjNfeDY0LXNldHVwLmV4ZQo4T1Iyc1JEVW5JOVZFUXZQRytub0xoMEtoNFRNd1N1bVhzelJpcGl0S04raW1OaXNyS0I0bUtUc2kwWVMzSDdRcjVRZVYyWURzdzNNNUNQN3pKVDJCdz09Cg==",
+                                             "url":  "https://github.com/mentanole/equinoia.com/releases/download/v0.1.3/Equinoia_0.1.3_x64-setup.exe"
+                                         }
+                  }
 }
