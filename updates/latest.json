@@ -1,11 +1,11 @@
 {
-    "version":  "0.1.3",
-    "notes":  "English log messages; readable color palette tooltip; fixed Storage pane header overlap; multi-select file-type filter (.jpg/.mp4/etc); text in card titles no longer fights drag-select; New Smart Collection moved into the add menu",
-    "pub_date":  "2026-09-27T23:18:42Z",
+    "version":  "0.1.7",
+    "notes":  "The free trial now has no time limit: every feature for up to 100 references. Launching Equinoia again brings the open window back instead of a second copy in the tray. Fixed videos with non-Latin or spaced file names not playing; videos your computer can\u0027t decode can be converted to MP4 in one click. Fixed the close button icon and the Select All button in Trash.",
+    "pub_date":  "2026-10-04T21:13:34Z",
     "platforms":  {
                       "windows-x86_64":  {
-                                             "signature":  "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRdkxOTE15QmpNZ0QwTUJsK2NiRUpzKzkyZTVDbiszQVNMSFUwbm1SSy9rRE84TVN5YU1MSnQ4YmFUbG1pZllFMDdySXo2Wmt1T1FsY2xFdjZ1WkJ3SHFKOTQvOU4wWndnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwNTUxMTIyCWZpbGU6RXF1aW5vaWFfMC4xLjNfeDY0LXNldHVwLmV4ZQo4T1Iyc1JEVW5JOVZFUXZQRytub0xoMEtoNFRNd1N1bVhzelJpcGl0S04raW1OaXNyS0I0bUtUc2kwWVMzSDdRcjVRZVYyWURzdzNNNUNQN3pKVDJCdz09Cg==",
-                                             "url":  "https://github.com/mentanole/equinoia.com/releases/download/v0.1.3/Equinoia_0.1.3_x64-setup.exe"
+                                             "signature":  "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRdkxOTE15QmpNZ0MvckJYaXVDOEhzNWdYSXBTU1dSbzB4RjNkemdKM0J2ZHV2cGtCVXVTZVlLMXVwWFByTHZpOTF1QVkvZFN3VXFEakNxR1U2M0JrTm5rbUtmQnhPTHdvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkxMTQ4NDE0CWZpbGU6RXF1aW5vaWFfMC4xLjdfeDY0LXNldHVwLmV4ZQpGSkJPV0JuNEltSWo2dUxIeTFXY3JlcTg0L250TkllbHdHWURBNzZDOXVWWjl3N3RMK0liU2hmMW1PS3MxT2N1K1IxNDlCYWNsc2Y2Vm0xZ2xhLzdBdz09Cg==",
+                                             "url":  "https://github.com/mentanole/equinoia.com/releases/download/v0.1.7/Equinoia_0.1.7_x64-setup.exe"
                                          }
                   }
 }
