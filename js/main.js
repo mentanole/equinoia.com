@@ -356,3 +356,25 @@ if (sideSwitcher && sideTrack) {
   window.addEventListener('resize', updateActiveFromScroll);
   updateActiveFromScroll();
 }
+
+// Direct installer download: point the download links at the latest
+// installer from updates/latest.json (the same manifest the in-app updater
+// reads). The GitHub releases page stays as the href if this fails.
+const downloadLinks = document.querySelectorAll('[data-download]');
+if (downloadLinks.length) {
+  const RELEASE_PREFIX = 'https://github.com/mentanole/equinoia.com/releases/download/';
+  fetch('updates/latest.json', { cache: 'no-cache' })
+    .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+    .then((manifest) => {
+      const url = manifest?.platforms?.['windows-x86_64']?.url;
+      if (typeof url !== 'string' || !url.startsWith(RELEASE_PREFIX)) return;
+      const version = /^\d+(\.\d+)*$/.test(manifest.version) ? manifest.version : '';
+      downloadLinks.forEach((a) => {
+        a.href = url;
+        if (version && a.dataset.downloadLabel) {
+          a.textContent = `${a.dataset.downloadLabel} · v${version}`;
+        }
+      });
+    })
+    .catch(() => {});
+}
