@@ -89,81 +89,97 @@
     </div>
 
     <div class="hero-shot reveal">
-      <div class="app-window">
-        <div class="app-titlebar">
-          <div class="app-title">
-            <svg width="14" height="14" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-              <rect x="1" y="1" width="9" height="9" rx="2" fill="currentColor"/>
-              <rect x="12" y="1" width="9" height="9" rx="2" fill="currentColor" opacity="0.4"/>
-              <rect x="1" y="12" width="9" height="9" rx="2" fill="currentColor" opacity="0.4"/>
-              <rect x="12" y="12" width="9" height="9" rx="2" fill="currentColor"/>
-            </svg>
-            Equinoia · Design Inspiration
-          </div>
-          <div class="win-controls" aria-hidden="true">
-            <span class="wc">–</span>
-            <span class="wc">▢</span>
-            <span class="wc wc-close">×</span>
-          </div>
+      <div class="app-window" aria-hidden="true">
+        <div class="win-controls">
+          <span class="wc">–</span>
+          <span class="wc">▢</span>
+          <span class="wc wc-close">×</span>
         </div>
         <div class="app-body">
-          <aside class="app-sidebar">
-            <div class="sidebar-search">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
-              Search references…
+          <aside class="app-sidebar app-panel">
+            <div class="sb-top">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+              <span class="sb-top-right">+</span>
             </div>
-            <div class="sidebar-group">
-              <p class="sidebar-label">Libraries</p>
-              <ul>
-                <li class="active">Design Inspiration</li>
-                <li>Photography</li>
-                <li>Client: Northwind</li>
-              </ul>
-            </div>
-            <div class="sidebar-group">
-              <p class="sidebar-label">Folders</p>
-              <ul>
-                <li>Moodboards <span class="count">86</span></li>
-                <li>UI patterns <span class="count">214</span></li>
-                <li>Color palettes <span class="count">37</span></li>
-                <li>Type specimens <span class="count">52</span></li>
-                <li>Textures <span class="count">93</span></li>
-              </ul>
-            </div>
-            <div class="sidebar-group">
-              <p class="sidebar-label">Tags</p>
-              <div class="tag-pills">
-                <span>editorial</span><span>dark-ui</span><span>grain</span><span>3d</span><span>type-led</span>
-              </div>
-            </div>
+            <div class="sb-library"><span class="sb-heart">♥</span> Design Inspiration <span class="sb-caret">⌄</span></div>
+            <ul class="sb-list">
+              <li class="active">All <span class="count">1,284</span></li>
+              <li>Uncategorized <span class="count">12</span></li>
+              <li>Recently Used</li>
+              <li>Find Duplicates</li>
+              <li>Trash <span class="count">9</span></li>
+            </ul>
+            <p class="sb-label">Smart Collections</p>
+            <ul class="sb-list">
+              <li>Videos &amp; Motion <span class="count">37</span></li>
+              <li>Added in 7 Days <span class="count">64</span></li>
+              <li>Needs Tagging <span class="count">18</span></li>
+            </ul>
+            <p class="sb-label">Folders</p>
+            <ul class="sb-list">
+              <li>UI/UX <span class="count">412</span></li>
+              <li>Motion Design <span class="count">96</span></li>
+              <li>3D <span class="count">143</span></li>
+            </ul>
           </aside>
+
           <div class="app-main">
-            <div class="grid-toolbar">
-              <span>Moodboards <span class="dim">· 86 items</span></span>
-              <span class="dim">Sort: Recently added</span>
+            <div class="main-toolbar">
+              <p class="main-title">All References <span>1,284</span></p>
+              <div class="main-tools">
+                <span class="tool-slider"><i></i></span>
+                <span class="tool-search">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+                  Search <kbd>Ctrl Space</kbd>
+                </span>
+                <span class="tool-btn"></span>
+              </div>
             </div>
-            <div class="tile-grid" aria-hidden="true">
-              <div class="tile t-shot span-a" style="--h:16;--h2:210;"></div>
-              <div class="tile t-ui span-b"><span></span><span></span><span class="short"></span></div>
-              <div class="tile t-shot span-c is-selected" style="--h:250;--h2:35;"></div>
-              <div class="tile t-palette span-a">
-                <i style="--c:#C1521A"></i><i style="--c:#33534B"></i><i style="--c:#E4C9A8"></i><i style="--c:#1B1A17"></i><i style="--c:#8C7A5B"></i>
+            <div class="ref-grid">
+              <div class="ref-col">
+                <figure class="ref"><div class="thumb th-site s-tall"><span class="badge">JPG</span><b></b><i></i><i class="short"></i><u></u><u></u><u></u></div><figcaption>Pin on Interfaces · Órbita</figcaption></figure>
+                <figure class="ref"><div class="thumb t-shot s-mid" style="--h:24;--h2:200;"><span class="badge">JPG</span></div><figcaption>Golden hour, Lisbon</figcaption></figure>
               </div>
-              <div class="tile t-type span-b">Aa</div>
-              <div class="tile t-shot span-c" style="--h:340;--h2:95;"></div>
-              <div class="tile t-shot span-b" style="--h:180;--h2:260;"></div>
-              <div class="tile t-texture span-a"></div>
-              <div class="tile t-shot span-b" style="--h:20;--h2:280;"></div>
-              <div class="tile t-ui span-a"><span></span><span class="short"></span><span></span></div>
-              <div class="tile t-shot span-c" style="--h:60;--h2:200;"></div>
-              <div class="tile t-palette span-b">
-                <i style="--c:#3E5C55"></i><i style="--c:#C1521A"></i><i style="--c:#F0D9C9"></i><i style="--c:#22201A"></i>
+              <div class="ref-col">
+                <figure class="ref"><div class="thumb th-video s-mid"><span class="badge">▶ MP4</span><span class="play"></span></div><figcaption>Pin on DIGITAL</figcaption></figure>
+                <figure class="ref is-selected"><div class="thumb t-palette s-short"><span class="badge">PNG</span><i style="--c:#C1521A"></i><i style="--c:#33534B"></i><i style="--c:#E4C9A8"></i><i style="--c:#1B1A17"></i><i style="--c:#8C7A5B"></i></div><figcaption>Rust &amp; moss palette</figcaption></figure>
+                <figure class="ref"><div class="thumb t-shot s-mid" style="--h:250;--h2:330;"><span class="badge">WEBP</span></div><figcaption>Soft gradient study</figcaption></figure>
               </div>
-              <div class="tile t-shot span-a" style="--h:300;--h2:140;"></div>
-              <div class="tile t-texture span-b"></div>
-              <div class="tile t-type span-c">Ag</div>
+              <div class="ref-col">
+                <figure class="ref"><div class="thumb th-site th-pricing s-short"><span class="badge">JPG</span><b></b><u></u><u></u><u></u></div><figcaption>Expense Summary</figcaption></figure>
+                <figure class="ref"><div class="thumb t-texture s-mid"><span class="badge">PNG</span></div><figcaption>Noise_grain_08</figcaption></figure>
+                <figure class="ref"><div class="thumb t-shot s-short" style="--h:180;--h2:260;"><span class="badge">JPG</span></div><figcaption>Glass UI, blue</figcaption></figure>
+              </div>
+              <div class="ref-col">
+                <figure class="ref"><div class="thumb t-type s-short"><span class="badge">PNG</span>Ag</div><figcaption>Fraunces specimen</figcaption></figure>
+                <figure class="ref"><div class="thumb th-site s-tall"><span class="badge">JPG</span><b></b><i></i><i class="short"></i><u></u><u></u><u></u></div><figcaption>Pin on 作品集排版</figcaption></figure>
+              </div>
             </div>
           </div>
+
+          <aside class="app-inspector">
+            <div class="app-panel insp-card">
+              <p class="insp-title">All References</p>
+              <p class="insp-sub">1,284 references · 2.1 GB</p>
+              <p class="insp-label">Storage breakdown <span>2.1 GB</span></p>
+              <div class="insp-bar"><i style="--w:62%;--c:#22C08A"></i><i style="--w:30%;--c:#F0435A"></i><i style="--w:8%;--c:#3B9CF0"></i></div>
+              <ul class="insp-legend">
+                <li><i style="--c:#22C08A"></i>Images <b>1,198</b></li>
+                <li><i style="--c:#F0435A"></i>Videos <b>37</b></li>
+                <li><i style="--c:#3B9CF0"></i>Pages <b>49</b></li>
+                <li><i style="--c:#F2C230"></i>Untagged <b>18</b></li>
+              </ul>
+            </div>
+            <div class="insp-stats">
+              <div class="app-panel"><p class="insp-label">Items</p><p class="insp-num">1,284</p></div>
+              <div class="app-panel"><p class="insp-label">Disk space</p><p class="insp-num">2.1 GB</p></div>
+              <div class="app-panel"><p class="insp-label">Visual ratio</p><p class="insp-num insp-green">93%</p></div>
+              <div class="app-panel"><p class="insp-label">Motion / web</p><p class="insp-num">86</p></div>
+            </div>
+            <p class="insp-action app-panel">Import References <span>Ctrl+O</span></p>
+            <p class="insp-action app-panel">Create New Folder</p>
+            <p class="insp-action app-panel">Filter &amp; Sort <span>Shift+F</span></p>
+          </aside>
         </div>
       </div>
       <p class="app-window-caption">Every tile is a real file in a plain folder on your disk, not locked inside a database only Equinoia can read.</p>

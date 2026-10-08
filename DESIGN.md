@@ -146,7 +146,7 @@ components:
     backgroundColor: "{colors.bg}"
     shadow: "{shadows.window}"
     rounded: 14px
-    note: "The hero's signature visual — a fake app titlebar + sidebar + masonry tile grid, fading out at the bottom like a scrolled library, carrying {shadows.window}. The chrome (titlebar, sidebar, cards) is monochrome; the tile CONTENT (photo gradients, palette swatches, texture) stays in real color deliberately, representing the user's actual colorful reference library inside the app."
+    note: "The hero's signature visual, modeled on the real app UI: frameless window with three panels — sidebar (library switcher, All/Uncategorized/Trash, Smart Collections, Folders; active item is an off-white pill), a reference grid of cards with file-type badges (JPG/PNG/MP4) and captions, and an inspector (storage breakdown bar, stat tiles, action buttons). The grid fades out at the bottom like a scrolled library; the window carries {shadows.window}. The inspector's storage-bar/legend colors and the red library heart mirror the real app and count as part of the mockup's content-color exception. Inspector hides under 1060px, sidebar under 760px. The chrome (titlebar, sidebar, cards) is monochrome; the tile CONTENT (photo gradients, palette swatches, texture) stays in real color deliberately, representing the user's actual colorful reference library inside the app."
   intro-overlay:
     backgroundColor: "{colors.dark-bg}"
     textColor: "{colors.ink}"
