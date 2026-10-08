@@ -89,26 +89,140 @@ code{
 }
 
 /* ============================================================
-   Intro decode
+   Intro: hands touch, app window bursts out
    ============================================================ */
 
+/* Strip y 780–1180 of the 1179×1848 hands photo, split at x 612 into two halves */
 #intro{
   position: fixed;
   inset: 0;
   z-index: 2000;
+  overflow: hidden;
   background: var(--dark-bg);
-  transition: opacity 0.35s ease;
+  transition: opacity 0.5s ease;
 }
 #intro.intro-done{ opacity: 0; pointer-events: none; }
 html.no-intro #intro{ display: none; }
 
-#intro-canvas{
+.intro-stage{
   position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
+  left: 50%;
+  top: 50%;
+  width: max(min(118vw, 1400px), 560px);
+  aspect-ratio: 1179 / 400;
+  transform: translate(-50%, -50%);
+  animation: intro-shake 0.32s 2.6s linear both;
 }
+
+.intro-hand{
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: url("../assets/intro-hands.png") no-repeat;
+  mix-blend-mode: lighten;             /* photo is on black; don't let one hand's black cover the other */
+  opacity: 0;
+}
+.intro-hand-left{
+  left: 0;
+  width: 51.91%;                       /* 612 / 1179 */
+  background-size: 192.65% auto;       /* 1179 / 612 */
+  background-position: 0 53.87%;       /* 780 / (1848 - 400) */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 32%);
+          mask-image: linear-gradient(90deg, transparent, #000 32%);
+  animation:
+    intro-hand-in 0.9s ease-out both,
+    intro-left 2s 0.6s cubic-bezier(0.55,0,0.25,1) both,
+    intro-hand-out 0.6s 2.7s ease-in forwards;
+}
+.intro-hand-right{
+  right: 0;
+  width: 48.09%;                       /* 567 / 1179 */
+  background-size: 207.94% auto;       /* 1179 / 567 */
+  background-position: 100% 53.87%;
+  -webkit-mask-image: linear-gradient(270deg, transparent, #000 32%);
+          mask-image: linear-gradient(270deg, transparent, #000 32%);
+  animation:
+    intro-hand-in 0.9s ease-out both,
+    intro-right 2s 0.6s cubic-bezier(0.55,0,0.25,1) both,
+    intro-hand-out 0.6s 2.7s ease-in forwards;
+}
+
+/* fingertip meeting point inside the stage */
+.intro-impact{
+  position: absolute;
+  left: 51.3%;
+  top: 51%;
+  width: 14%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  translate: -50% -50%;
+  background: radial-gradient(circle, rgba(243,242,238,0.9) 0%, rgba(243,242,238,0.25) 30%, transparent 62%);
+  box-shadow: 0 0 0 2px rgba(243,242,238,0.5);
+  opacity: 0;
+  animation: intro-impact 0.8s 2.6s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+
+.intro-app{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(92vw, 1080px, 150vh);
+  aspect-ratio: 16 / 9;
+  container-type: inline-size;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  box-shadow: var(--shadow-window);
+  transform: translate(-50%, -50%) scale(0.03);
+  opacity: 0;
+  animation: intro-app-in 0.85s 2.72s cubic-bezier(0.16,1.25,0.3,1) both;
+}
+.intro-app img{ width: 100%; height: 100%; }
+
+/* covers the mockup's empty-state block with the phrase */
+.intro-app-phrase{
+  position: absolute;
+  left: 14.7%;                         /* Main column: x 282–1622 of 1920 */
+  width: 69.8%;
+  top: 10%;
+  bottom: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  background: #121212;
+  font-family: var(--font-display);
+  font-size: 4.4cqw;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: var(--ink);
+  opacity: 0;
+  animation: intro-fade 0.6s 3.35s ease-out both;
+}
+.intro-app-phrase span{ color: var(--ink-soft); }
+
+@keyframes intro-hand-in{ from{ opacity: 0; filter: blur(6px); } to{ opacity: 1; filter: blur(0); } }
+@keyframes intro-hand-out{ from{ opacity: 1; filter: blur(0); } to{ opacity: 0; filter: blur(8px); } }
+@keyframes intro-left{ from{ transform: translateX(-34%); } to{ transform: translate(9.5%, -2.2%); } }
+@keyframes intro-right{ from{ transform: translateX(36%); } to{ transform: translate(-11.1%, 2.3%); } }
+@keyframes intro-impact{
+  0%  { opacity: 1; transform: scale(0.1); }
+  100%{ opacity: 0; transform: scale(5); }
+}
+@keyframes intro-shake{
+  0%,100%{ translate: 0 0; }
+  25%{ translate: -4px 2px; }
+  50%{ translate: 3px -2px; }
+  75%{ translate: -2px 1px; }
+}
+@keyframes intro-app-in{
+  from{ opacity: 0; transform: translate(-50%, -50%) scale(0.03); }
+  to  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes intro-fade{ from{ opacity: 0; } to{ opacity: 1; } }
 
 .skip-link{
   position:absolute; left:-999px; top:0;

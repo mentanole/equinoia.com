@@ -12,7 +12,7 @@
 <body>
 
 <script>
-  if (sessionStorage.getItem('eq-intro-seen')) {
+  if (sessionStorage.getItem('eq-intro-seen') || matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('no-intro');
   } else {
     sessionStorage.setItem('eq-intro-seen', '1');
@@ -20,7 +20,15 @@
 </script>
 
 <div id="intro" aria-hidden="true">
-  <canvas id="intro-canvas"></canvas>
+  <div class="intro-stage">
+    <div class="intro-hand intro-hand-left"></div>
+    <div class="intro-hand intro-hand-right"></div>
+    <div class="intro-impact"></div>
+  </div>
+  <div class="intro-app">
+    <img src="assets/intro-app.jpg" alt="" loading="lazy" width="1920" height="1080">
+    <p class="intro-app-phrase">All your references.<br><span>Found in under a second.</span></p>
+  </div>
 </div>
 
 <a class="skip-link" href="#main">Skip to content</a>
