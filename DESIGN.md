@@ -128,19 +128,15 @@ components:
     rounded: pill
     fontSize: 0.82rem
     fontWeight: 600
-    note: "Legacy token, superseded by hero-frame-tag in the hero itself but still the pattern for any future inline eyebrow pill elsewhere on the page."
-  hero-frame:
-    backgroundColor: "{colors.paper}"
-    border: "1px solid {colors.line}"
-    rounded: 32px
-    shadow: "{shadows.card}"
-    note: "The whole hero is one large rounded card (structure adapted from an IntegratedBio/Mobbin reference the user provided): a floating tag+dot pill top-left, the headline, the real app-window mockup as the card's central visual (recessed to {colors.bg}, not {colors.paper}, so it reads as a well inset into the card), then a bottom bar with supporting copy left and CTAs right. This pattern is scoped to the hero only — don't extend the framed-card treatment to other sections without being asked."
-  hero-frame-tag:
-    backgroundColor: "{colors.bg}"
+    note: "Legacy token, superseded by hero-tag in the hero itself but still the pattern for any future inline eyebrow pill elsewhere on the page."
+  hero:
+    backgroundColor: "{colors.dark-bg}"
+    note: "Full-bleed true-black hero. Top stage: rotating particle-sphere canvas (js/main.js, sized to .hero-stage) behind a centered hero-tag pill, the Fraunces headline, hero-sub and two CTAs (btn-primary download + btn-outline-light buy). Below it the app-window mockup overlaps the lower edge of the sphere (negative top margin) so the real product is visible on the first screen."
+  hero-tag:
+    backgroundColor: "rgba(14,14,13,0.7)"
     textColor: "{colors.ink-soft}"
     rounded: pill
-    typography: "{typography.kicker}"
-    note: "Small pill with a leading {tag-dot} (6px circle, accent-colored, soft accent-soft halo). Floats at the top of hero-frame, replacing the old standalone eyebrow pill."
+    note: "Small pill with a leading tag-dot (6px circle, accent-colored, accent-soft halo)."
   hero-cta-pill:
     backgroundColor: "{colors.accent}"
     textColor: "{colors.bg}"
@@ -148,9 +144,9 @@ components:
     note: "Primary hero CTA: pill with left-padded label text and a trailing circular badge (cta-arrow: {colors.bg} fill, {colors.accent} arrow glyph) — an inverted-contrast accent nested inside the pill, echoing the reference's dark-pill-plus-light-circle pairing but flipped for this site's light-on-dark primary button convention."
   app-window-mockup:
     backgroundColor: "{colors.bg}"
-    shadow: "none (border only, per {colors.line})"
+    shadow: "{shadows.window}"
     rounded: 14px
-    note: "The hero's signature visual — a fake app titlebar + sidebar + masonry tile grid. Now nested inside hero-frame rather than floating on its own, so it sits on {colors.bg} (recessed) instead of {colors.paper} (would blend into the frame) and carries no shadow of its own. The chrome (titlebar, sidebar, cards) is monochrome; the tile CONTENT (photo gradients, palette swatches, texture) stays in real color deliberately, representing the user's actual colorful reference library inside the app."
+    note: "The hero's signature visual — a fake app titlebar + sidebar + masonry tile grid, fading out at the bottom like a scrolled library, carrying {shadows.window}. The chrome (titlebar, sidebar, cards) is monochrome; the tile CONTENT (photo gradients, palette swatches, texture) stays in real color deliberately, representing the user's actual colorful reference library inside the app."
   intro-overlay:
     backgroundColor: "{colors.dark-bg}"
     textColor: "{colors.ink}"
@@ -323,7 +319,6 @@ mark) when redesigning, and don't reintroduce color into it.
 - Don't replay the intro overlay more than once per session, and don't let it exceed ~1.6s — it should always land comfortably under the 2s ceiling, not skirt it.
 - Don't regenerate the intro's glitch field (or any future full-screen decorative animation) from scratch every frame. That's a large-area synchronized flash and a genuine photosensitive-seizure risk, not just a performance or taste concern — desynchronized, rate-limited change per element is a hard requirement, not an option.
 - Don't try to embed "SF Pro" as a downloadable web font file; Apple's license doesn't permit it. The system-font stack (`-apple-system`, `BlinkMacSystemFont`) is the only correct way to render it on the web.
-- Don't extend the hero-frame's rounded-card treatment to other sections without being asked; it was scoped deliberately to the hero when adapting a reference site's layout. Feature rows, pricing, FAQ, etc. keep their existing flat/card patterns.
 
 ## Known gaps
 

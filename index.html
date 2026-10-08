@@ -7,6 +7,9 @@
 <meta name="description" content="Equinoia is a fast, local-first reference manager for Windows. Drag in images and inspiration from anywhere, tag them, and find any one of them in under a second. Free trial with every feature for up to 100 references, then a one-time $19.99 license (launch price $11.99 for the first 100 copies).">
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -72,10 +75,98 @@
 
   <!-- HERO -->
   <section class="hero" id="hero">
-    <canvas id="hero-sphere" class="hero-sphere" aria-hidden="true"></canvas>
-    <div class="hero-content reveal">
-      <h1>Next level creativity comes true.</h1>
-      <p class="hero-sub">Drag in images and screenshots from anywhere, tag them as you go, and find any one in under a second.</p>
+    <div class="hero-stage">
+      <canvas id="hero-sphere" class="hero-sphere" aria-hidden="true"></canvas>
+      <div class="hero-content reveal">
+        <p class="hero-tag"><span class="tag-dot" aria-hidden="true"></span>For Windows 10 &amp; 11 · No account needed</p>
+        <h1>All your references.<br>Found in under a second.</h1>
+        <p class="hero-sub">Drag in images and screenshots from anywhere, tag them as you go, and pull up any one of them before you finish typing.</p>
+        <div class="hero-actions">
+          <a href="#download" class="btn btn-primary btn-lg">Download free trial</a>
+          <a href="#pricing" class="btn btn-outline-light btn-lg">Buy license · $11.99</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-shot reveal">
+      <div class="app-window">
+        <div class="app-titlebar">
+          <div class="app-title">
+            <svg width="14" height="14" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+              <rect x="1" y="1" width="9" height="9" rx="2" fill="currentColor"/>
+              <rect x="12" y="1" width="9" height="9" rx="2" fill="currentColor" opacity="0.4"/>
+              <rect x="1" y="12" width="9" height="9" rx="2" fill="currentColor" opacity="0.4"/>
+              <rect x="12" y="12" width="9" height="9" rx="2" fill="currentColor"/>
+            </svg>
+            Equinoia · Design Inspiration
+          </div>
+          <div class="win-controls" aria-hidden="true">
+            <span class="wc">–</span>
+            <span class="wc">▢</span>
+            <span class="wc wc-close">×</span>
+          </div>
+        </div>
+        <div class="app-body">
+          <aside class="app-sidebar">
+            <div class="sidebar-search">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+              Search references…
+            </div>
+            <div class="sidebar-group">
+              <p class="sidebar-label">Libraries</p>
+              <ul>
+                <li class="active">Design Inspiration</li>
+                <li>Photography</li>
+                <li>Client: Northwind</li>
+              </ul>
+            </div>
+            <div class="sidebar-group">
+              <p class="sidebar-label">Folders</p>
+              <ul>
+                <li>Moodboards <span class="count">86</span></li>
+                <li>UI patterns <span class="count">214</span></li>
+                <li>Color palettes <span class="count">37</span></li>
+                <li>Type specimens <span class="count">52</span></li>
+                <li>Textures <span class="count">93</span></li>
+              </ul>
+            </div>
+            <div class="sidebar-group">
+              <p class="sidebar-label">Tags</p>
+              <div class="tag-pills">
+                <span>editorial</span><span>dark-ui</span><span>grain</span><span>3d</span><span>type-led</span>
+              </div>
+            </div>
+          </aside>
+          <div class="app-main">
+            <div class="grid-toolbar">
+              <span>Moodboards <span class="dim">· 86 items</span></span>
+              <span class="dim">Sort: Recently added</span>
+            </div>
+            <div class="tile-grid" aria-hidden="true">
+              <div class="tile t-shot span-a" style="--h:16;--h2:210;"></div>
+              <div class="tile t-ui span-b"><span></span><span></span><span class="short"></span></div>
+              <div class="tile t-shot span-c is-selected" style="--h:250;--h2:35;"></div>
+              <div class="tile t-palette span-a">
+                <i style="--c:#C1521A"></i><i style="--c:#33534B"></i><i style="--c:#E4C9A8"></i><i style="--c:#1B1A17"></i><i style="--c:#8C7A5B"></i>
+              </div>
+              <div class="tile t-type span-b">Aa</div>
+              <div class="tile t-shot span-c" style="--h:340;--h2:95;"></div>
+              <div class="tile t-shot span-b" style="--h:180;--h2:260;"></div>
+              <div class="tile t-texture span-a"></div>
+              <div class="tile t-shot span-b" style="--h:20;--h2:280;"></div>
+              <div class="tile t-ui span-a"><span></span><span class="short"></span><span></span></div>
+              <div class="tile t-shot span-c" style="--h:60;--h2:200;"></div>
+              <div class="tile t-palette span-b">
+                <i style="--c:#3E5C55"></i><i style="--c:#C1521A"></i><i style="--c:#F0D9C9"></i><i style="--c:#22201A"></i>
+              </div>
+              <div class="tile t-shot span-a" style="--h:300;--h2:140;"></div>
+              <div class="tile t-texture span-b"></div>
+              <div class="tile t-type span-c">Ag</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="app-window-caption">Every tile is a real file in a plain folder on your disk, not locked inside a database only Equinoia can read.</p>
     </div>
   </section>
 

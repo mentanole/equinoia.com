@@ -141,7 +141,7 @@ const sphereCanvas = document.getElementById('hero-sphere');
 if (sphereCanvas) {
   const sctx = sphereCanvas.getContext('2d');
   const sDpr = Math.min(window.devicePixelRatio || 1, 2);
-  const heroSection = document.getElementById('hero');
+  const heroSection = sphereCanvas.parentElement;
   const sphereReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   let sw = 0, sh = 0;
