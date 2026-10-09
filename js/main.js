@@ -1,4 +1,4 @@
-// Intro: two hands drift together, touch, and the app window bursts out (timeline lives in CSS)
+// Intro: two particle hands turn, drift together and touch; the app window bursts out (timeline in CSS)
 const introEl = document.getElementById('intro');
 if (introEl && !document.documentElement.classList.contains('no-intro')) {
   document.body.style.overflow = 'hidden';
@@ -14,6 +14,101 @@ if (introEl && !document.documentElement.classList.contains('no-intro')) {
 
   window.addEventListener('keydown', finishIntro, { once: true });
   introEl.addEventListener('click', finishIntro, { once: true });
+
+  // Particle hands: dots sampled from the photo's bright pixels, depth from brightness.
+  // Coordinates are photo pixels inside the strip y 780–1180 (same box as .intro-stage).
+  const handsCanvas = document.getElementById('intro-hands');
+  const hctx = handsCanvas.getContext('2d');
+  const stageEl = introEl.querySelector('.intro-stage');
+  const hDpr = Math.min(window.devicePixelRatio || 1, 2);
+  const STRIP_Y = 780, STRIP_W = 1179, STRIP_H = 400, SPLIT_X = 612, STEP = 3; // STEP 3 ≈ 7k dots, ~13ms/frame; STEP 2 doubled that
+  const hands = [
+    // dx/dy: travel from start to the touch pose; pivot: where the arm leaves the frame
+    { pts: [], fromX: -208, toX: 58, toY: -9, pivotX: 0, pivotY: 140, fadeDir: 1 },
+    { pts: [], fromX: 204, toX: -63, toY: 9, pivotX: STRIP_W, pivotY: 190, fadeDir: -1 },
+  ];
+
+  const resizeHands = () => {
+    handsCanvas.width = innerWidth * hDpr;
+    handsCanvas.height = innerHeight * hDpr;
+  };
+  resizeHands();
+  window.addEventListener('resize', resizeHands);
+
+  const img = new Image();
+  img.src = 'assets/intro-hands.png';
+  img.decode().then(() => {
+    const off = document.createElement('canvas');
+    off.width = STRIP_W; off.height = STRIP_H;
+    const octx = off.getContext('2d');
+    octx.drawImage(img, 0, -STRIP_Y);
+    const data = octx.getImageData(0, 0, STRIP_W, STRIP_H).data;
+    for (let y = 0; y < STRIP_H; y += STEP) {
+      for (let x = 0; x < STRIP_W; x += STEP) {
+        const lum = data[(y * STRIP_W + x) * 4] / 255;
+        if (lum < 0.16 || Math.random() > lum * 0.9) continue;
+        const hand = hands[x < SPLIT_X ? 0 : 1];
+        // fade the arm where the photo crops it
+        const edge = hand.fadeDir > 0 ? x / 190 : (STRIP_W - x) / 190;
+        hand.pts.push({
+          x: x + Math.random() * STEP,
+          y: y + Math.random() * STEP,
+          z: (lum - 0.5) * 110 + (Math.random() - 0.5) * 12,
+          a: lum * Math.min(1, edge),
+          s: 0.9 + Math.random() * 1.2,
+        });
+      }
+    }
+    requestAnimationFrame(drawHands);
+  }).catch(() => {});
+
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+  const easeInOut = (v) => (v < 0.5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2);
+  const easeOut = (v) => 1 - Math.pow(1 - v, 3);
+  // follow the CSS clock so the touch lands exactly on the impact keyframe
+  const clockAnim = handsCanvas.getAnimations().find((a) => a.animationName === 'intro-hand-out');
+
+  const drawHands = () => {
+    if (!introEl.isConnected) return;
+    const t = clockAnim ? clockAnim.currentTime : 0;
+    const rect = stageEl.getBoundingClientRect();
+    const k = rect.width / STRIP_W;
+    hctx.setTransform(hDpr, 0, 0, hDpr, 0, 0);
+    hctx.clearRect(0, 0, innerWidth, innerHeight);
+
+    const appear = easeOut(clamp01(t / 900));
+    const travel = easeInOut(clamp01((t - 600) / 2000));
+    // wrist turn: starts rolled over and swings counter-clockwise into the reaching pose
+    const turn = 1 - easeOut(clamp01((t - 200) / 1700));
+    const roll = turn * 0.7;           // around the forearm axis, reveals the wrist
+    const swing = turn * 0.24;         // in-plane, positive = clockwise in canvas space
+    const cosR = Math.cos(roll), sinR = Math.sin(roll);
+    const cosS = Math.cos(swing), sinS = Math.sin(swing);
+
+    hctx.fillStyle = '#F3F2EE';
+    hands.forEach((h) => {
+      const offX = h.fromX + (h.toX - h.fromX) * travel;
+      const offY = h.toY * travel;
+      h.pts.forEach((p) => {
+        // roll around the horizontal axis through the pivot
+        const ry = p.y - h.pivotY;
+        const y3 = ry * cosR - p.z * sinR;
+        const z3 = ry * sinR + p.z * cosR;
+        const persp = 600 / (600 - z3);
+        const px = (p.x - h.pivotX) * persp;
+        const py = y3 * persp;
+        // in-plane swing around the pivot
+        const sx = h.pivotX + px * cosS - py * sinS + offX;
+        const sy = h.pivotY + px * sinS + py * cosS + offY;
+        const depth = clamp01((z3 + 50) / 100);
+        hctx.globalAlpha = p.a * (0.35 + depth * 0.65) * appear;
+        const size = p.s * (0.7 + depth * 0.6) * Math.max(k, 0.6);
+        hctx.fillRect(rect.left + sx * k, rect.top + sy * k, size, size);
+      });
+    });
+    hctx.globalAlpha = 1;
+    if (t < 3300) requestAnimationFrame(drawHands);
+  };
 }
 
 // Hero sphere — rotating particle globe

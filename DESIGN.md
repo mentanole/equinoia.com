@@ -1,7 +1,7 @@
 ---
 version: 2.0
 name: Equinoia-design-system
-description: A dark, monochrome marketing site for Equinoia, a local-first Windows reference manager. The system anchors on a near-black canvas with a serif display face (Fraunces) for headlines, and a native system-font sans (SF Pro on Mac/iOS via -apple-system, matched natively on other platforms) for body copy, with an off-white accent used for CTAs and highlights instead of a hue. The one deliberate exception is the app-window mockup's own "content" (photo/palette/texture tiles), which keeps real color to read as the user's actual colorful reference library inside an otherwise monochrome shell. A "Creation of Adam" intro (two monochrome hands drift together on true black, touch, and the app window bursts out of the touch point showing "All your references. Found in under a second.") plays once per session before the page reveals.
+description: A dark, monochrome marketing site for Equinoia, a local-first Windows reference manager. The system anchors on a near-black canvas with a serif display face (Fraunces) for headlines, and a native system-font sans (SF Pro on Mac/iOS via -apple-system, matched natively on other platforms) for body copy, with an off-white accent used for CTAs and highlights instead of a hue. The one deliberate exception is the app-window mockup's own "content" (photo/palette/texture tiles), which keeps real color to read as the user's actual colorful reference library inside an otherwise monochrome shell. A "Creation of Adam" intro (two particle-dot hands (same dot language as the hero sphere) turn, drift together on true black, touch, and the app window bursts out of the touch point showing "All your references. Found in under a second.") plays once per session before the page reveals.
 
 colors:
   bg: "#0E0E0D"
@@ -149,7 +149,7 @@ components:
     backgroundColor: "{colors.dark-bg}"
     textColor: "{colors.ink}"
     typography: "{typography.display-*} via --font-display for the phrase"
-    note: "Fixed, full-viewport overlay on true black above everything. Hands = assets/intro-hands.png split into two halves (mix-blend-mode: lighten, outer edges masked). CSS-only timeline: hands fade in 0–0.9s, approach 0.6–2.6s, touch at 2.6s (single soft radial pulse + 0.3s shake), hands blur out while the app window (assets/intro-app.jpg, exported from the Figma file 'Новый проект', frame 'Equinoia — All References (Empty)') scales out of the touch point; phrase replaces the mockup's empty state. JS only ends it at 5.6s, or on click/keypress. Once per session (sessionStorage); skipped entirely for prefers-reduced-motion."
+    note: "Fixed, full-viewport overlay on true black above everything. Hands = ~7k dots sampled from assets/intro-hands.png on a canvas (depth from brightness), drawn by js/main.js and clocked off the canvas's CSS fade animation. Hands fade in 0–0.9s, start rolled over and turn counter-clockwise to open the wrist 0.2–1.9s, approach 0.6–2.6s, touch at 2.6s (single soft radial pulse + 0.3s shake), hands blur out while the app window (assets/intro-app.jpg, exported from the Figma file 'Новый проект', frame 'Equinoia — All References (Empty)') scales out of the touch point; phrase replaces the mockup's empty state. JS only ends it at 5.6s, or on click/keypress. Once per session (sessionStorage); skipped entirely for prefers-reduced-motion."
   feature-card-visual:
     backgroundColor: "{colors.paper}"
     border: "1px solid {colors.line}"
@@ -224,15 +224,16 @@ value rather than hue:
 ## Intro
 
 A once-per-session overlay on true black, riffing on Michelangelo's
-*Creation of Adam*: two hands fade in, drift together, and touch; a
+*Creation of Adam*: two hands built from dots (like the hero sphere) fade in, turn counter-clockwise to open the wrist, drift together, and touch; a
 single soft pulse marks the contact, then the Equinoia app window
 (exported from the Figma file "Новый проект") bursts out of the touch
 point with "All your references. / Found in under a second." in place
 of its empty state. Total ~6s, skippable by click or keypress, skipped
 entirely under `prefers-reduced-motion`. A synchronous inline script
 at the top of `<body>` sets `html.no-intro` before first paint on
-repeat views. The timeline is pure CSS keyframes in `css/styles.css`
-(`#intro` block); `js/main.js` only ends it. Keep the impact to one
+repeat views. The timeline is CSS keyframes in `css/styles.css` (`#intro`
+block); `js/main.js` draws the particle hands on that clock and ends
+the intro. Keep the impact to one
 soft pulse — no repeated flashes.
 
 ## Logo mark
